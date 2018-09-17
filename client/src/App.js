@@ -25,18 +25,6 @@ class App extends Component {
 
   render() {
     return (
-      <BrowserRouter>
-        <Switch>
-          <Route path="/home" name="Home" component={Landing} />
-          <Route exact path="/" name="Login Page" component={Login} />
-          <Route exact path="/add" name="Add" component={Add} />
-          <Route exact path="/update" name="Update" component={Update} />
-          <Route exact path="/notification" name="Notification" component={Notification} />
-          <Route exact path="/deviceid/:id" name="DeviceId" component={DeviceId} />
-        </Switch>
-      </BrowserRouter>
-
-
       <div className="App">
         <header className="App-header">
           <h1 className="App-title">Release Management System</h1>
