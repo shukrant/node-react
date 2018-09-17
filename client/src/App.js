@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import ReleaseCard from './components/ReleaseCard/ReleaseCard';
+import ProjectSection from './components/ProjectSection/ProjectSection';
 
 class App extends Component {
   constructor(props){
@@ -31,14 +31,12 @@ class App extends Component {
         </header>
         <div className="projects">
           {
-            this.state.rlist.map((release) => {
+            this.state.rlist.map((project) => {
               return(
-                <ReleaseCard 
-                  key={release.release_id} 
-                  rnumber={release.release_no} 
-                  rtype={release.release_type}
-                  status={release.status}
-                  branch={release.branch}
+                <ProjectSection 
+                  key={project.project_id}
+                  name={project.project_name}
+                  rlist={project.releases}
                 />
               )
             })
