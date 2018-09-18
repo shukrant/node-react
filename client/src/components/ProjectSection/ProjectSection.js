@@ -7,8 +7,7 @@ class ProjectSection extends Component {
     constructor(props){
         super(props);
         this.state={
-          rlist: [],
-          pid: this.props.key
+          rlist: []
         }
     };
     componentDidMount() {
@@ -18,10 +17,11 @@ class ProjectSection extends Component {
     }
 
     callApi = async () => {
-        const rel = await fetch('/api/releaseList');
+        const rel = await fetch('/project/'+ this.props.match.params.id);
         const body = await rel.json();
+        console.log(body)
         if (rel.status !== 200) throw Error(body.message);
-        return body;
+        return body.releases;
     };
     render() {
         return (
@@ -44,6 +44,7 @@ class ProjectSection extends Component {
         );
     }
 }
+
 
 export default ProjectSection;
 

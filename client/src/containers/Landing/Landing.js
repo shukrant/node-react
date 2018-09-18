@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './Landing.css';
+import {PropTypes} from 'prop-types';
 import {Redirect, Link} from 'react-router-dom';
 import ProjectSection from '../../components/ProjectSection/ProjectSection';
 
@@ -28,16 +29,13 @@ class Landing extends Component {
                 </header>
                 <div className="projects">
                 {
-                    this.project_list.map((project) => {
-                    return(
-                        <Link to={"/project/"+project.project_id}  >
-                            <ProjectSection 
-                                key={project.project_id}
-                                name={project.project_name}
-                            />
+                    // project_list.map((project) => {
+                    // return(
+                        <Link to="/project/p1" >
+                           
                         </Link>
-                    )
-                    })
+                    // )
+                    // })
                 }
                 </div>
             </div>
