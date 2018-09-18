@@ -19,14 +19,15 @@ class ProjectSection extends Component {
     callApi = async () => {
         const rel = await fetch('/project/'+ this.props.match.params.id);
         const body = await rel.json();
-        console.log(body)
         if (rel.status !== 200) throw Error(body.message);
         return body.releases;
     };
     render() {
         return (
             <div>
-                <h5>{this.props.name}</h5>
+                <div className="project-header">
+                    <h1 >{this.props.match.params.id}</h1>
+                </div>
                 <div className="releases">
                     {
                         this.state.rlist.map((release)=>(
@@ -39,6 +40,9 @@ class ProjectSection extends Component {
                             />
                         ))
                     }
+                </div>
+                <div className="project-footer">
+                    <button className="btn btn-success">New Release</button>
                 </div>
             </div>
         );
