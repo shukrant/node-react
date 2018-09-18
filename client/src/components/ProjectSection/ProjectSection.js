@@ -17,7 +17,7 @@ class ProjectSection extends Component {
     }
 
     callApi = async () => {
-        const rel = await fetch('/project/'+ this.props.match.params.id);
+        const rel = await fetch('/projectdetails/'+ this.props.match.params.id);
         const body = await rel.json();
         if (rel.status !== 200) throw Error(body.message);
         return body.releases;
