@@ -22,6 +22,14 @@ class ProjectSection extends Component {
         if (rel.status !== 200) throw Error(body.message);
         return body.releases;
     };
+
+    onNewReleaseClick = () => {
+        console.log('inside');
+        this.props.history.push('/releaseForm');
+        // <Redirect to = '/releaseForm'/>
+    }
+
+
     render() {
         return (
             <div>
@@ -42,7 +50,7 @@ class ProjectSection extends Component {
                     }
                 </div>
                 <div className="project-footer">
-                    <button className="btn btn-success">New Release</button>
+                    <button className="btn btn-success" onClick={this.onNewReleaseClick}>New Release</button>
                 </div>
             </div>
         );

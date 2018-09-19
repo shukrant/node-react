@@ -2,12 +2,55 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 5001;
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser').json;
 var User = require('./models/userModel');
 var Project = require('./models/projectModel');
 
 
-/* dummy data for timeline cards*/
-data=[
+
+  /* dummy data for project list */
+  project_list =[
+    {
+      project_id : 'p1',
+      project_name : 'Project1',
+      branches: [
+        {
+          name : 'master'
+        },
+        {
+          name : 'master1'
+        },
+        {
+          name : 'master2'
+        },
+      ]
+    },
+    {
+      project_id : 'p2',
+      project_name : 'Project2',
+      branches: [
+        {
+          name : 'branch1'
+        },
+        {
+          name : 'branch2'
+        }
+      ]
+    },
+    {
+      project_id : 'p3',
+      project_name : 'Project3',
+      branches: [
+        {
+          name : 'abc'
+        }
+      ]
+    }
+  ]
+
+
+  /* dummy data for timeline cards*/
+  data=[
     {
       project_id: 'p1',
       project_name: 'Project1',
@@ -113,10 +156,37 @@ data=[
     }
   ];
 
-  /* call from project section */
+
+  /* mongo db connection */
+  var mongoDB = 'mongodb://localhost/login-oauth';
+  mongoose.connect(mongoDB,{ useNewUrlParser: true });
+  mongoose.Promise = global.Promise;
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'connection error:'));
+  db.once('open', function() {
+    console.log("DB connected");
+  });
+
+
+  app.use(bodyParser());
+
+  /* call for fetching project release details */
   app.get('/projectdetails/:id', (req, res) => {
     res.json(...data.filter(project=> project.project_id===req.params.id));
   });
+
+  /* call for fetching project list and branch list */
+  app.get('/api/project_list/:pid', (req,res) => {
+    res.json(...project_list.filter(list => list.project_id===req.params.pid));
+  });
+
+  /* call to submit form data to database */
+  app.post('/api/submitform', (req,res) =>{
+    console.log('Data: ', req.body);
+  });
+
+
+  /* Fetching data from database */
 
   /* get all Users data from db */
   app.get('/users', (req, res) => {
@@ -125,16 +195,6 @@ data=[
         res.send(err)
       else
     	  res.json(users); // return all users in JSON format
-    });
-  });
-
-  /* get all project along with releases */
-  app.get('/teams', (req, res) => {
-    Team.find((err, teams) => {
-    	if (err)
-        res.send(err)
-      else
-    	  res.json(teams); // return all teams in JSON format
     });
   });
 
@@ -148,17 +208,4 @@ data=[
     });
   });
 
-  /* mongo db connection */
-  var mongoDB = 'mongodb://localhost/login-oauth';
-  mongoose.connect(mongoDB,{ useNewUrlParser: true });
-  mongoose.Promise = global.Promise;
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'connection error:'));
-  db.once('open', function() {
-    console.log("DB connected");
-  });
-
-
-
-
-app.listen(port, () => console.log(`Listening on port ${port}`));
+  app.listen(port, () => console.log(`Listening on port ${port}`));
