@@ -3,9 +3,59 @@ const app = express();
 const port = process.env.PORT || 5001;
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser').json;
+
 var User = require('./models/userModel');
 var Project = require('./models/projectModel');
+var Release = require('./models/releaseModel');
 
+var mongoDB = 'mongodb://localhost/login-oauth';
+mongoose.connect(mongoDB,{ useNewUrlParser: true });
+mongoose.set('useCreateIndex', true);
+mongoose.Promise = global.Promise;
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log("DB connected");
+  var user1 = new User({ email: "abz@1mg.com", role: "EMPLOYEE", created_at: Date.now() });
+  user1.save(function (err) {
+    if (err)
+      console.log(err.message);
+    else
+      console.log("user1");
+  });
+
+  var project1 = new Project({ project_name: 'RMS', status: true, contributors: [user1._id], created_at: Date.now() });
+
+  project1.save(function (err) {
+    if (err)
+      console.log(err.message);
+    var release1 = new Release({
+      note: "First release",
+      project_id: project1._id,
+      release_status: "PENDING",
+      release_priority: "Minor",
+      branch_name: "Master",
+      approved_by: "XYZ",
+      approved_on: Date.now(),
+      released_by: "ABC",
+      released_on: Date.now(),
+      dismissed_by: "PQR",
+      dismissed_on: Date.now(),
+      ci_jobs:
+          {
+              tags: ["Tag1","tag2"],
+              release_no: "1234",
+              build_status: true
+          },
+      created_at: Date.now()
+    });
+
+    release1.save(function (err) {
+      if (err)
+        console.log(err.message);
+    });
+  });
+});
 ///test
 
   /* dummy data for project list */
@@ -155,18 +205,6 @@ var Project = require('./models/projectModel');
       ]
     }
   ];
-
-
-  /* mongo db connection */
-  var mongoDB = 'mongodb://localhost/login-oauth';
-  mongoose.connect(mongoDB,{ useNewUrlParser: true });
-  mongoose.Promise = global.Promise;
-  var db = mongoose.connection;
-  db.on('error', console.error.bind(console, 'connection error:'));
-  db.once('open', function() {
-    console.log("DB connected");
-  });
-
 
   app.use(bodyParser());
 
